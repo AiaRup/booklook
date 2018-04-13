@@ -5,3 +5,18 @@
 .show {
   display: block;
 }
+
+form {
+  text-align: center;
+}
+
+input,
+button {
+  margin: 10px;
+}
+
+/* h5 span {
+  font-size: 1rem;
+  margin-left: 20px;
+  font-weight: normal;
+} */
