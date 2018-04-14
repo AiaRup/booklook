@@ -12,11 +12,14 @@ form {
 
 input,
 button {
-  margin: 10px;
+  margin: 10px 0;
 }
 
-/* h5 span {
-  font-size: 1rem;
-  margin-left: 20px;
-  font-weight: normal;
-} */
+.no-result {
+  color: red;
+}
+
+#ajax-loader {
+  display: none;
+  text-align: center;
+}
