@@ -1,7 +1,7 @@
 // Function to present the data on the html page
-var output;
+function createHtml(bookData) {
+  var output;
 
-function createHtml(bookData, status) {
   if (bookData.items !== undefined) {
     output = '';
     for (var i = 0; i < bookData.items.length; i += 1) {
@@ -19,19 +19,17 @@ function createHtml(bookData, status) {
       if (bookData.items[i].volumeInfo.imageLinks !== undefined) {
         var image = bookData.items[i].volumeInfo.imageLinks.thumbnail;
       } else {
-        // image = 'image_not_available.png';
         image = 'sorry-image.jpg';
       }
-
       output += '<div class="book">' + '<h1>' + title + '</h1>' +
         '<p>' + description + '</p>' + '<h3>Written by: ' + author + '</h3>' +
-        '<img src="' + image + '" width="150" height="150"></div>';
+        '<img src="' + image + '" width="150" height="200"></div>';
       output += '<div class="book-listItem">' + '<h5><a href="#">' + title + '</a></h5>' +
         '<span>Written by: ' + author + '</span></div>';
     }
 
     $('.books').append(output);
-    if (status === 1) {
+    if (bookData.items.length === 1) {
       $('.book-listItem').hide();
     } else {
       $('.book').hide();
@@ -42,15 +40,13 @@ function createHtml(bookData, status) {
 }
 
 // Ajax function to get the data from the google books API
-var fetch = function (searchURL, func, status) {
+var fetch = function (searchURL, func) {
   $.ajax({
     method: 'GET',
     url: searchURL,
     success: function (data) {
       console.log(data);
-      func(data, status);
-
-
+      func(data);
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.log(textStatus);
@@ -66,21 +62,21 @@ $('.search-book').on('click', function () {
   var isbnNum = $('#isbn').val();
   var titleInput = $('#title').val();
   var authorInput = $('#author').val();
-  // declare some variables
   var url;
-  var status = 0;
-  //check which option was filled for the book search
+  // If all inputs are empty
+  if (isbnNum === '' && titleInput === '' && authorInput === '') {
+    $('.books').append('<h4 class="no-result">You need to choose one of the search options!</h4>');
+    return;
+  }
+  // Check which option was filled for the book search
   if (isbnNum !== '') {
     url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbnNum}`;
-    status = 1;
-    fetch(url, createHtml, status);
   } else if (titleInput !== '') {
     url = `https://www.googleapis.com/books/v1/volumes?q=intitle:${titleInput}`;
-    fetch(url, createHtml, status);
   } else if (authorInput !== '') {
     url = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${authorInput}`;
-    fetch(url, createHtml, status);
   }
+  fetch(url, createHtml);
 });
 
 // EventHandler when a title book is clicked
