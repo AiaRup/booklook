@@ -23,19 +23,21 @@
           <hr/>
 
         </div>
+
         <div id="ajax-loader">
           <img src="ajax-loader.gif" alt="ajax-loader">
         </div>
+
         <div class="books">
         </div>
 
-        <form id="form" data-parsley-validate>
+        <form id="form">
           <h3>Search By</h3>
 
           <div class="form-group">
-            <input type="text" id="isbn" class="form-control" placeholder="ISBN Number" data-parsley-type="digits" required="">
-            <input type="text" id="title" class="form-control" placeholder="Book TITLE" data-parsley-minlength="4" data-parsley-pattern="^[a-zA-Z]+$">
-            <input type="text" id="author" class="form-control" placeholder="Book AUTHOR" data-parsley-minlength="4" data-parsley-pattern="^[a-zA-Z]+$">
+            <input type="number" id="isbn" class="form-control" placeholder="ISBN Number">
+            <input type="text" id="title" class="form-control" placeholder="Book TITLE">
+            <input type="text" id="author" class="form-control" placeholder="Book AUTHOR">
           </div>
 
           <button class="btn btn-primary search-book" type="button">Search</button>
@@ -45,8 +47,6 @@
   </div>
 
   <script src="node_modules/jquery/dist/jquery.js"></script>
-  <script src="node_modules/parsleyjs/dist/parsley.min.js"></script>
-  <script src="node_modules/handlebars/dist/handlebars.min.js"></script>
   <script type="text/javascript" src="script.js"></script>
 </body>
 

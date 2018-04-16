@@ -6,12 +6,26 @@ function createHtml(bookData, status) {
     output = '';
     for (var i = 0; i < bookData.items.length; i += 1) {
       var title = bookData.items[i].volumeInfo.title;
-      var author = bookData.items[i].volumeInfo.authors[0];
-      var description = bookData.items[i].volumeInfo.description;
-      var image = bookData.items[i].volumeInfo.imageLinks.thumbnail;
+      if (bookData.items[i].volumeInfo.authors !== undefined) {
+        var author = bookData.items[i].volumeInfo.authors[0];
+      } else {
+        author = 'No author';
+      }
+      if (bookData.items[i].volumeInfo.description !== undefined) {
+        var description = bookData.items[i].volumeInfo.description;
+      } else {
+        description = 'No Description';
+      }
+      if (bookData.items[i].volumeInfo.imageLinks !== undefined) {
+        var image = bookData.items[i].volumeInfo.imageLinks.thumbnail;
+      } else {
+        // image = 'image_not_available.png';
+        image = 'sorry-image.jpg';
+      }
+
       output += '<div class="book">' + '<h1>' + title + '</h1>' +
         '<p>' + description + '</p>' + '<h3>Written by: ' + author + '</h3>' +
-        '<img src="' + image + '"></div>';
+        '<img src="' + image + '" width="150" height="150"></div>';
       output += '<div class="book-listItem">' + '<h5><a href="#">' + title + '</a></h5>' +
         '<span>Written by: ' + author + '</span></div>';
     }
@@ -33,8 +47,9 @@ var fetch = function (searchURL, func, status) {
     method: 'GET',
     url: searchURL,
     success: function (data) {
-      func(data, status);
       console.log(data);
+      func(data, status);
+
 
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -52,21 +67,18 @@ $('.search-book').on('click', function () {
   var titleInput = $('#title').val();
   var authorInput = $('#author').val();
   // declare some variables
-  var url, generalURL;
+  var url;
   var status = 0;
-
+  //check which option was filled for the book search
   if (isbnNum !== '') {
-    generalURL = 'https://www.googleapis.com/books/v1/volumes?q=isbn:';
-    url = generalURL.concat(isbnNum);
+    url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbnNum}`;
     status = 1;
     fetch(url, createHtml, status);
   } else if (titleInput !== '') {
-    generalURL = 'https://www.googleapis.com/books/v1/volumes?q=intitle:';
-    url = generalURL.concat(titleInput);
+    url = `https://www.googleapis.com/books/v1/volumes?q=intitle:${titleInput}`;
     fetch(url, createHtml, status);
   } else if (authorInput !== '') {
-    generalURL = 'https://www.googleapis.com/books/v1/volumes?q=inauthor:';
-    url = generalURL.concat(authorInput);
+    url = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${authorInput}`;
     fetch(url, createHtml, status);
   }
 });
