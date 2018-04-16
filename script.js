@@ -40,13 +40,12 @@ function createHtml(bookData) {
 }
 
 // Ajax function to get the data from the google books API
-var fetch = function (searchURL, func) {
+var fetch = function (searchURL) {
   $.ajax({
     method: 'GET',
     url: searchURL,
     success: function (data) {
-      console.log(data);
-      func(data);
+      createHtml(data);
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.log(textStatus);
@@ -76,7 +75,7 @@ $('.search-book').on('click', function () {
   } else if (authorInput !== '') {
     url = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${authorInput}`;
   }
-  fetch(url, createHtml);
+  fetch(url);
 });
 
 // EventHandler when a title book is clicked
